@@ -1,14 +1,24 @@
 using Itransition.Trainee.Web.Data;
+using Itransition.Trainee.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddAuthentication(AuthService.AUTH_TYPE_KEY)
+    .AddCookie(AuthService.AUTH_TYPE_KEY, config =>
+    {
+        config.LoginPath = "/Auth/Login";
+        config.AccessDeniedPath = "/Home/Forbidden";
+    });
+
+builder.Services.AddDbContext<WebDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-builder.Services.AddDbContext<WebDbContext>(x =>
-    x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,8 +33,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
