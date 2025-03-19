@@ -1,4 +1,5 @@
-﻿@model List<UserViewModel>
+﻿@using System.Globalization
+@model List<UserViewModel>
 @section Scripts {
     <script src="~/js/activity.js"></script>
 }
@@ -68,7 +69,7 @@
                         <td class="align-middle position-relative">
                             @lastSeenText
                             <div class="timestamp-popup">
-                                @user.LastLoginTime.ToString("MMMM dd, yyyy HH:mm:ss")
+                                @user.LastLoginTime.ToString("MMMM dd, yyyy HH:mm:ss", new CultureInfo("en-US"))
                             </div>
                         </td>
                     </tr>
