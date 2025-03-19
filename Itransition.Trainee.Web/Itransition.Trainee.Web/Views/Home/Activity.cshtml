@@ -1,0 +1,127 @@
+﻿
+@section Scripts{
+    <script src="~/js/activity.js"></script>
+}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="d-flex">
+                <button class="btn btn-outline-primary me-2" id="blockBtn">
+                    <i class="bi bi-lock-fill"></i> Block
+                </button>
+                <button class="btn btn-outline-primary me-2" id="unblockBtn">
+                    <i class="bi bi-unlock"></i>
+                </button>
+                <button class="btn btn-outline-danger" id="deleteBtn">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <div class="input-group" style="max-width: 300px;">
+                    <input type="text" class="form-control" placeholder="Filter" id="filterInput">
+                    <span class="input-group-text bg-white border-start-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="bg-light">
+                    <th width="40" class="text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                            <label class="form-check-label visually-hidden" for="selectAll">Select All</label>
+                        </div>
+                    </th>
+                    <th>Name</th>
+                    <th>Email <i class="bi bi-arrow-down-short text-muted"></i></th>
+                    <th>Last seen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center align-middle">
+                        <div class="form-check">
+                            <input class="form-check-input user-select" type="checkbox" id="user1" checked>
+                            <label class="form-check-label visually-hidden" for="user1">Select User</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fw-bold">Clare, Alex</div>
+                        <div class="text-muted">N/A</div>
+                    </td>
+                    <td class="align-middle">a_clare42@gmail.com</td>
+                    <td class="align-middle position-relative">
+                        5 minutes ago
+                        <div class="timestamp-popup">
+                            October 12, 2024 15:45:30
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center align-middle">
+                        <div class="form-check">
+                            <input class="form-check-input user-select" type="checkbox" id="user2">
+                            <label class="form-check-label visually-hidden" for="user2">Select User</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fw-bold">Morrison, Jim</div>
+                        <div class="text-muted">CFO, Meta Platforms, Inc.</div>
+                    </td>
+                    <td class="align-middle">dmtimer9@dealyaari.com</td>
+                    <td class="align-middle position-relative">
+                        less than a minute ago
+                        <div class="timestamp-popup">
+                            October 12, 2024 15:45:30
+                        </div>
+                    </td>
+                </tr>
+                <tr class="strikethrough">
+                    <td class="text-center align-middle">
+                        <div class="form-check">
+                            <input class="form-check-input user-select" type="checkbox" id="user3" checked>
+                            <label class="form-check-label visually-hidden" for="user3">Select User</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fw-bold text-decoration-line-through">Simone, Nina</div>
+                        <div class="text-muted">Regional Manager, Amazon.com, Inc.</div>
+                    </td>
+                    <td class="align-middle">marishabelin@giftcode-ao.com</td>
+                    <td class="align-middle position-relative">
+                        3 weeks ago
+                        <div class="timestamp-popup">
+                            October 12, 2024 15:45:30
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center align-middle">
+                        <div class="form-check">
+                            <input class="form-check-input user-select" type="checkbox" id="user4">
+                            <label class="form-check-label visually-hidden" for="user4">Select User</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fw-bold">Zappa, Frank</div>
+                        <div class="text-muted">Architect, Meta Platforms, Inc.</div>
+                    </td>
+                    <td class="align-middle">zappa_f@citybank.com</td>
+                    <td class="align-middle position-relative">
+                        less than a minute ago
+                        <div class="timestamp-popup">
+                            October 12, 2024 15:45:30
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
