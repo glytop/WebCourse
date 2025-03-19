@@ -1,4 +1,6 @@
+using Itransition.Trainee.Web.CustomMiddleware;
 using Itransition.Trainee.Web.Data;
+using Itransition.Trainee.Web.Data.Repositories;
 using Itransition.Trainee.Web.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,13 +11,23 @@ builder.Services
     .AddCookie(AuthService.AUTH_TYPE_KEY, config =>
     {
         config.LoginPath = "/Auth/Login";
+        config.AccessDeniedPath = "/Auth/Login";
+        config.LogoutPath = "/Auth/Logout";
     });
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<WebDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Register in DI container
+builder.Services.AddScoped<IUserRepositoryReal, UserRepository>();
+
+builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 
@@ -34,6 +46,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<BlockedUserMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

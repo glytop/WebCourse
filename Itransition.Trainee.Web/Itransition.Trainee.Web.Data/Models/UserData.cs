@@ -6,7 +6,7 @@ namespace Itransition.Trainee.Web.Data.Models
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public DateTime LastLoginTime { get; set; }
         public bool IsBlocked { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

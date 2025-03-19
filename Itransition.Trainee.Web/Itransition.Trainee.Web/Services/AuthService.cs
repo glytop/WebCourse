@@ -23,7 +23,7 @@
         public bool IsBlocked()
         {
             var isStr = GetClaimValue(CLAIM_TYPE_IS_BLOCKED);
-            if (isStr == null)
+            if (isStr is null)
             {
                 return false;
             }
@@ -36,15 +36,15 @@
             return GetClaimValue(CLAIM_TYPE_NAME) ?? "Гость";
         }
 
-        public int? GetUserId()
+        public Guid? GetUserId()
         {
             var isStr = GetClaimValue(CLAIM_TYPE_ID);
-            if (isStr == null)
+            if (isStr is null)
             {
                 return null;
             }
 
-            return int.Parse(isStr);
+            return Guid.Parse(isStr);
         }
 
         private string? GetClaimValue(string type)
