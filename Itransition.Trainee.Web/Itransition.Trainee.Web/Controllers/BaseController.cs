@@ -15,7 +15,7 @@ namespace Itransition.Trainee.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!_authService.IsAuthenticated() && _authService.IsBlocked())
+            if (!_authService.IsAuthenticated() || _authService.IsBlocked())
             {
                 context.Result = RedirectToAction("Login", "Auth");
             }

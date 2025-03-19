@@ -1,11 +1,14 @@
 ﻿using Itransition.Trainee.Web.Data.Interface.Repositories;
 using Itransition.Trainee.Web.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Itransition.Trainee.Web.Data.Repositories
 {
     public interface IUserRepositoryReal : IUserRepository<UserData>
     {
-
+        public void BlockUsers(List<Guid> id);
+        public void UnblockUsers(List<Guid> id);
+        public void DeleteUsers(List<Guid> id);
     }
     public class UserRepository : BaseRepository<UserData>, IUserRepositoryReal
     {
@@ -47,15 +50,31 @@ namespace Itransition.Trainee.Web.Data.Repositories
             _webDbContext.SaveChanges();
         }
 
-        public void Delete(Guid id)
+        public void BlockUsers(List<Guid> id)
         {
-            var user = _webDbContext.Users.FirstOrDefault(x => x.Id == id);
-            if (user != null)
+            var users = _webDbContext.Users.Where(u => id.Contains(u.Id)).ToList();
+            foreach (var user in users)
             {
-                _webDbContext.Remove(user);
-                _webDbContext.SaveChanges();
+                user.IsBlocked = true;
             }
+            _webDbContext.SaveChanges();
         }
 
+        public void UnblockUsers(List<Guid> id)
+        {
+            var users = _webDbContext.Users.Where(u => id.Contains(u.Id)).ToList();
+            foreach (var user in users)
+            {
+                user.IsBlocked = false;
+            }
+            _webDbContext.SaveChanges();
+        }
+
+        public void DeleteUsers(List<Guid> id)
+        {
+            var users = _webDbContext.Users.Where(u => id.Contains(u.Id)).ToList();
+            _webDbContext.Users.RemoveRange(users);
+            _webDbContext.SaveChanges();
+        }
     }
 }

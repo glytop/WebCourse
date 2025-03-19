@@ -12,12 +12,10 @@ namespace Itransition.Trainee.Web.Controllers
     public class AuthController : BaseController
     {
         private IUserRepositoryReal _userRepository;
-        private AuthService _authService;
 
         public AuthController(IUserRepositoryReal userRepositoryReal, AuthService authService) : base(authService)
         {
             _userRepository = userRepositoryReal;
-            _authService = authService;
         }
 
         [HttpGet]
@@ -44,6 +42,9 @@ namespace Itransition.Trainee.Web.Controllers
                 ModelState.AddModelError("", "Your account is blocked");
                 return View(viewModel);
             }
+
+            user.LastLoginTime = DateTime.UtcNow;
+            _userRepository.Update(user);
 
             var claims = new List<Claim>
             {
