@@ -25,7 +25,9 @@ namespace Itransition.Trainee.Web.Data.Repositories
 
         public List<UserData> GetAll()
         {
-            return _webDbContext.Users.ToList();
+            return _webDbContext
+                .Users
+                .ToList();
         }
 
         public void Add(UserData user)
@@ -50,7 +52,7 @@ namespace Itransition.Trainee.Web.Data.Repositories
             var user = _webDbContext.Users.FirstOrDefault(x => x.Id == id);
             if (user != null)
             {
-                user.IsDeleted = true;
+                _webDbContext.Remove(user);
                 _webDbContext.SaveChanges();
             }
         }

@@ -8,6 +8,7 @@
         public const string AUTH_TYPE_KEY = "Smile";
         public const string CLAIM_TYPE_ID = "Id";
         public const string CLAIM_TYPE_NAME = "Name";
+        public const string CLAIM_TYPE_IS_BLOCKED = "IsBlocked";
 
         public AuthService(IHttpContextAccessor httpContextAccessor)
         {
@@ -17,6 +18,17 @@
         public bool IsAuthenticated()
         {
             return GetUserId() is not null;
+        }
+
+        public bool IsBlocked()
+        {
+            var isStr = GetClaimValue(CLAIM_TYPE_IS_BLOCKED);
+            if (isStr == null)
+            {
+                return false;
+            }
+
+            return bool.Parse(isStr);
         }
 
         public string GetName()

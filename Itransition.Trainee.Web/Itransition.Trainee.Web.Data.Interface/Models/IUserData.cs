@@ -7,7 +7,6 @@
         string PasswordHash { get; set; }
         DateTime LastLoginTime { get; set; }
         bool IsBlocked { get; set; }
-        bool IsDeleted { get; set; }
         DateTime CreatedAt { get; set; }
     }
 }

@@ -9,7 +9,6 @@ builder.Services
     .AddCookie(AuthService.AUTH_TYPE_KEY, config =>
     {
         config.LoginPath = "/Auth/Login";
-        config.AccessDeniedPath = "/Home/Forbidden";
     });
 
 builder.Services.AddDbContext<WebDbContext>(options =>
@@ -38,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();

@@ -8,5 +8,15 @@ namespace Itransition.Trainee.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
     }
 }

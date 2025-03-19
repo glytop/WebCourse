@@ -1,7 +1,59 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutTable.cshtml";
+﻿@section Scripts {
+    <script src="~/js/login.js"></script>
 }
 
-<div>
-    aaaaaaaaaa
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <!-- App Title -->
+            <div class="mb-4">
+                <h1 class="app-title">THE APP</h1>
+            </div>
+
+            <!-- Login Form -->
+            <div class="mt-5 mb-4">
+                <p class="text-muted small">Start your journey</p>
+                <h2 class="fw-semibold">Sign In to The App</h2>
+            </div>
+
+            <form id="loginForm" class="mt-4">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="email" placeholder="test@example.com" required>
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                        <span class="input-group-text password-toggle" role="button">
+                            <i class="bi bi-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                    <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+                    Sign In
+                </button>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <div>
+                        <span class="text-muted">Don't have an account?</span>
+                        <a href="/Auth/Register" class="ms-1 text-decoration-none">Sign up</a>
+                    </div>
+                    <a href="/Auth/ForgotPassword" class="text-decoration-none">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
