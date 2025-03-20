@@ -73,6 +73,7 @@ namespace Itransition.Trainee.Web.Data.Repositories
         public void DeleteUsers(List<Guid> id)
         {
             var users = _webDbContext.Users.Where(u => id.Contains(u.Id)).ToList();
+
             _webDbContext.Users.RemoveRange(users);
             _webDbContext.SaveChanges();
         }

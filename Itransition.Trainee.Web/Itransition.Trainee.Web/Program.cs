@@ -23,7 +23,6 @@ builder.Services.AddDbContext<WebDbContext>(options =>
 
 // Register in DI container
 builder.Services.AddScoped<IUserRepositoryReal, UserRepository>();
-
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddHttpContextAccessor();
