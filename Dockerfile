@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . .
 
 # Восстанавливаем зависимости
-RUN dotnet restore "MyApp/MyApp.csproj"
+RUN dotnet restore "Itransition.Trainee.Web.csproj"
 
 # Собираем проект в режиме Release
-RUN dotnet publish "MyApp/MyApp.csproj" -c Release -o /app/publish
+RUN dotnet publish "Itransition.Trainee.Web.csproj" -c Release -o out
 
 # Этап 2: Используем образ для запуска приложения
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
