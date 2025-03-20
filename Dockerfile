@@ -1,19 +1,18 @@
-# Этап 1: Используем образ для сборки приложения
+# Используем образ с SDK для сборки проекта
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Указываем рабочую директорию в контейнере
 WORKDIR /app
 
-# Копируем все файлы из текущей директории в контейнер
+# Копируем все файлы проекта в контейнер
 COPY . .
 
 # Восстанавливаем зависимости
-RUN dotnet restore "Itransition.Trainee.Web.csproj"
+RUN dotnet restore "Itransition.Trainee.Web/Itransition.Trainee.Web/Itransition.Trainee.Web.csproj"
 
 # Собираем проект в режиме Release
-RUN dotnet publish "Itransition.Trainee.Web.csproj" -c Release -o out
+RUN dotnet publish "Itransition.Trainee.Web/Itransition.Trainee.Web/Itransition.Trainee.Web.csproj" -c Release -o out
 
-# Этап 2: Используем образ для запуска приложения
+# Создаём финальный образ, используя минимальный образ ASP.NET
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 
 WORKDIR /app
