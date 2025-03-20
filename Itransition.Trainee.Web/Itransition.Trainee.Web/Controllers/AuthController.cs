@@ -1,11 +1,8 @@
-﻿using Itransition.Trainee.Web.Data.Models;
-using Itransition.Trainee.Web.Data.Repositories;
+﻿using Itransition.Trainee.Web.Data.Repositories;
 using Itransition.Trainee.Web.Models;
 using Itransition.Trainee.Web.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
 namespace Itransition.Trainee.Web.Controllers
@@ -20,12 +17,8 @@ namespace Itransition.Trainee.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(bool blocked = false)
+        public IActionResult Login()
         {
-            if (blocked)
-            {
-                ViewBag.BlockedMessage = "Your account is blocked.";
-            }
             return View();
         }
 
@@ -34,21 +27,21 @@ namespace Itransition.Trainee.Web.Controllers
         {
             var user = _userRepository.Login(viewModel.Email, viewModel.Password);
 
-            if (user is null)
-            {
-                ModelState.AddModelError(
-                    nameof(viewModel.Email),
-                    "Не правильный логин или пароль");
-            }
-
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "The data is not valid";
+                return View(viewModel);
+            }
+
+            if (user is null)
+            {
+                TempData["ErrorMessage"] = "Invalid email or password";
                 return View(viewModel);
             }
 
             if (user.IsBlocked)
             {
-                ModelState.AddModelError("", "Your account is blocked");
+                TempData["ErrorMessage"] = "The user is blocked";
                 return View(viewModel);
             }
 
@@ -74,6 +67,8 @@ namespace Itransition.Trainee.Web.Controllers
                     IsPersistent = viewModel.RememberMe
                 }).Wait();
 
+            TempData["SuccessMessage"] = "Successful authorization";
+
             return RedirectToAction("Activity", "Table");
         }
 
@@ -86,12 +81,16 @@ namespace Itransition.Trainee.Web.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel viewModel)
         {
-            if (!ModelState.IsValid || (viewModel.Password != viewModel.ConfirmPassword) || (!_userRepository.CheckIsEmailAvailable(viewModel.Email)))
+            if (!ModelState.IsValid || (viewModel.Password != viewModel.ConfirmPassword) 
+                || (!_userRepository.CheckIsEmailAvailable(viewModel.Email)))
             {
+                TempData["ErrorMessage"] = "Registration error";
                 return View(viewModel);
             }
 
             _userRepository.Register(viewModel.Name, viewModel.Email, viewModel.Password);
+
+            TempData["SuccessMessage"] = "Successful registration";
 
             return RedirectToAction("Login");
         }

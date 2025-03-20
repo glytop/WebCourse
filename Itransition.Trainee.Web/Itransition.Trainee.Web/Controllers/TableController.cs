@@ -37,6 +37,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Block(List<Guid> id)
         {
             _userRepository.BlockUsers(id);
+            TempData["SuccessMessage"] = "The user(s) has been successfully blocked!";
             return RedirectToAction("Activity");
         }
 
@@ -45,6 +46,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Unblock(List<Guid> id)
         {
             _userRepository.UnblockUsers(id);
+            TempData["SuccessMessage"] = "The user(s) has been successfully unblocked!";
             return RedirectToAction("Activity");
         }
 
@@ -53,6 +55,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Delete(List<Guid> id)
         {
             _userRepository.DeleteUsers(id);
+            TempData["SuccessMessage"] = "The user(s) has been successfully deleted!";
             return RedirectToAction("Activity");
         }
     }
