@@ -45,9 +45,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+app.UseMiddleware<BlockedUserMiddleware>();
 app.UseAuthorization();
 
-app.UseMiddleware<BlockedUserMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

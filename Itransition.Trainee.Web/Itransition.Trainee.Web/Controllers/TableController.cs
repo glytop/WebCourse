@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Itransition.Trainee.Web.Controllers
 {
-    public class TableController : BaseController
+    public class TableController : Controller
     {
         private IUserRepositoryReal _userRepository;
-        public TableController(AuthService authService, IUserRepositoryReal userRepository) : base(authService)
+        public TableController(IUserRepositoryReal userRepository)
         {
             _userRepository = userRepository;
         }
@@ -37,7 +37,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Block(List<Guid> id)
         {
             _userRepository.BlockUsers(id);
-            return Ok();
+            return RedirectToAction("Activity");
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Unblock(List<Guid> id)
         {
             _userRepository.UnblockUsers(id);
-            return Ok();
+            return RedirectToAction("Activity");
         }
 
         [HttpPost]
@@ -53,7 +53,7 @@ namespace Itransition.Trainee.Web.Controllers
         public IActionResult Delete(List<Guid> id)
         {
             _userRepository.DeleteUsers(id);
-            return Ok();
+            return RedirectToAction("Activity");
         }
     }
 }

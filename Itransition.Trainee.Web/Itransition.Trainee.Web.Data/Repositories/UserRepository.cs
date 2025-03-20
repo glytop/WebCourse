@@ -1,6 +1,7 @@
 ﻿using Itransition.Trainee.Web.Data.Interface.Repositories;
 using Itransition.Trainee.Web.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Itransition.Trainee.Web.Data.Repositories
 {
@@ -9,6 +10,11 @@ namespace Itransition.Trainee.Web.Data.Repositories
         public void BlockUsers(List<Guid> id);
         public void UnblockUsers(List<Guid> id);
         public void DeleteUsers(List<Guid> id);
+        UserData? Login(string email, string password);
+        void Register(string name, string email, string password);
+        bool CheckIsEmailAvailable(string email);
+
+
     }
     public class UserRepository : BaseRepository<UserData>, IUserRepositoryReal
     {
@@ -35,13 +41,7 @@ namespace Itransition.Trainee.Web.Data.Repositories
 
         public void Add(UserData user)
         {
-            if (user.Id == Guid.Empty)
-            {
-                user.Id = Guid.NewGuid();
-            }
-
-            _webDbContext.Users.Add(user);
-            _webDbContext.SaveChanges();
+            throw new NotImplementedException("User method Register to create a new User");
         }
 
         public void Update(UserData user)
@@ -75,6 +75,36 @@ namespace Itransition.Trainee.Web.Data.Repositories
             var users = _webDbContext.Users.Where(u => id.Contains(u.Id)).ToList();
             _webDbContext.Users.RemoveRange(users);
             _webDbContext.SaveChanges();
+        }
+
+        public UserData? Login(string email, string password)
+        {
+            return _dbSet.FirstOrDefault(x => x.Email == email && x.Password == password);
+        }
+
+        public void Register(string name, string email, string password)
+        {
+            if (_dbSet.Any(x => x.Email == email))
+            {
+                throw new Exception();
+            }
+
+            var user = new UserData
+            {
+                Name = name,
+                Email = email,
+                Password = password,
+                IsBlocked = false,
+                LastLoginTime = DateTime.UtcNow
+            };
+
+            _dbSet.Add(user);
+            _webDbContext.SaveChanges();
+        }
+
+        public bool CheckIsEmailAvailable(string email)
+        {
+            return !_dbSet.Any(x => x.Email == email);
         }
     }
 }

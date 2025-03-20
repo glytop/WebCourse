@@ -5,16 +5,17 @@
 }
 
 <div class="container-fluid mt-4">
+    <form method="post" action="/Table">
         <div class="row mb-4">
             <div class="col-md-6">
                 <div class="d-flex m-2">
-                    <button class="btn btn-outline-primary me-2" id="blockBtn">
+                    <button formaction="/Table/Block" type="submit" class="btn btn-outline-primary me-2">
                         <i class="bi bi-lock-fill"></i> Block
                     </button>
-                    <button class="btn btn-outline-primary me-2" id="unblockBtn">
+                    <button formaction="/Table/Unblock" type="submit" class="btn btn-outline-primary me-2">
                         <i class="bi bi-unlock"></i>
                     </button>
-                    <button class="btn btn-outline-danger" id="deleteBtn">
+                    <button formaction="/Table/Delete" type="submit" class="btn btn-outline-danger me-2">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
@@ -55,14 +56,14 @@
                     lastSeen < 1440 ? $"{(int)(lastSeen / 60)} hours ago" :
                     $"{(int)(lastSeen / 1440)} days ago";
 
-                    <tr class="@(user.IsBlocked ? "strikethrough" : "")">
+                    <tr>
                         <td class="text-center align-middle">
                             <div class="form-check">
-                                <input class="form-check-input user-select" type="checkbox" value="@user.Id">
+                                <input class="form-check-input user-select" type="checkbox" name="id" value="@user.Id">
                             </div>
                         </td>
                         <td>
-                            <div class="fw-bold">@user.Name</div>
+                                <div class="fw-bold @(user.IsBlocked ? "text-decoration-line-through": "")">@user.Name</div>
                             <div class="text-muted">N/A</div>
                         </td>
                         <td class="align-middle">@user.Email</td>
@@ -77,4 +78,5 @@
             </tbody>
         </table>
     </div>
+</form>
 </div>

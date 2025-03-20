@@ -5,35 +5,44 @@ using Itransition.Trainee.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
 namespace Itransition.Trainee.Web.Controllers
 {
-    public class AuthController : BaseController
+    public class AuthController : Controller
     {
         private IUserRepositoryReal _userRepository;
 
-        public AuthController(IUserRepositoryReal userRepositoryReal, AuthService authService) : base(authService)
+        public AuthController(IUserRepositoryReal userRepositoryReal)
         {
             _userRepository = userRepositoryReal;
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(bool blocked = false)
         {
+            if (blocked)
+            {
+                ViewBag.BlockedMessage = "Your account is blocked.";
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(LoginViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-                return View(viewModel);
+            var user = _userRepository.Login(viewModel.Email, viewModel.Password);
 
-            var user = _userRepository.GetByEmail(viewModel.Email);
-            if (user == null || user.Password != viewModel.Password)
+            if (user is null)
             {
-                ModelState.AddModelError("", "Invalid email or password");
+                ModelState.AddModelError(
+                    nameof(viewModel.Email),
+                    "Не правильный логин или пароль");
+            }
+
+            if (!ModelState.IsValid)
+            {
                 return View(viewModel);
             }
 
@@ -75,41 +84,23 @@ namespace Itransition.Trainee.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public IActionResult Register(RegisterViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            if (model.Password != model.ConfirmPassword)
+            if (!ModelState.IsValid || (viewModel.Password != viewModel.ConfirmPassword) || (!_userRepository.CheckIsEmailAvailable(viewModel.Email)))
             {
-                ModelState.AddModelError("", "Passwords do not match");
-                return View(model);
+                return View(viewModel);
             }
 
-            var existingUser = _userRepository.GetByEmail(model.Email);
-            if (existingUser is not null)
-            {
-                ModelState.AddModelError("", "User with this email already exists");
-                return View(model);
-            }
-
-            var user = new UserData
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Password = model.Password,
-                IsBlocked = false,
-                LastLoginTime = DateTime.UtcNow
-            };
-
-            _userRepository.Add(user);
+            _userRepository.Register(viewModel.Name, viewModel.Email, viewModel.Password);
 
             return RedirectToAction("Login");
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext
+                .SignOutAsync(AuthService.AUTH_TYPE_KEY)
+                .Wait();
             return RedirectToAction("Login");
         }
 
