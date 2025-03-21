@@ -19,7 +19,7 @@ builder.Services
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<WebDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register in DI container
 builder.Services.AddScoped<IUserRepositoryReal, UserRepository>();
